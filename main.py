@@ -36,16 +36,15 @@ print(f'Minimum x/255 value of fan speed: {MIN_SPEED}')
 with serial.Serial(args.port, args.baud, timeout=args.timeout) as fan:
     fan_speed = 0
     while True:
-        print(f'Temperature: {get_temp()}')
         if get_temp() > MAX_TEMP:
             if fan_speed < MIN_SPEED:
                 fan_speed = MIN_SPEED
             if fan_speed < MAX_SPEED:
-                fan_speed += 5
+                fan_speed += 10
         else:
             fan_speed = 0
 
-        print(f'Speed: {fan_speed}')
+        print(f'Temperature: {get_temp()} C, speed: {fan_speed}/255')
         packet = bytearray()
         packet.append(fan_speed)  # This is where fan value goes
         fan.write(packet)
@@ -53,4 +52,4 @@ with serial.Serial(args.port, args.baud, timeout=args.timeout) as fan:
         if res != b'1':
             print(f'Some error: {res}')
 
-        time.sleep(5)
+        time.sleep(15)
