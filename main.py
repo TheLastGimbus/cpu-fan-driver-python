@@ -1,9 +1,10 @@
 import argparse
+import json
+import subprocess
 import time
 import traceback
 
 import serial
-from pyspectator.processor import Cpu
 
 par = argparse.ArgumentParser()
 par.add_argument('-p', '--port', default='/dev/ttyUSB0')
@@ -12,11 +13,23 @@ par.add_argument('--timeout', default=5)
 args = par.parse_args()
 
 
+# This is customisable per machine
+def get_temp():
+    s = subprocess.run('sensors -j'.split(), capture_output=True)
+    out = json.loads(s.stdout)
+    out = out['coretemp-isa-0000']
+    temp = 0
+    for core_key in list(out)[1:]:
+        core = out[core_key]
+        print(core)
+        temp = max(temp, core[list(core)])
+    return temp
+
+
 def main():
-    cpu = Cpu(monitoring_latency=1)
-    with serial.Serial(args.port, args.baud, timeout=args.timeout) as fan, cpu:
+    with serial.Serial(args.port, args.baud, timeout=args.timeout) as fan:
         while True:
-            print(f'Temp: {cpu.temperature}')
+            print(f'Temp: {get_temp()}')
             packet = bytearray()
             packet.append(10)  # This is where fan value goes
             fan.write(packet)
