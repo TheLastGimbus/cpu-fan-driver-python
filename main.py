@@ -34,6 +34,7 @@ def main():
         while True:
             fan_speed = args.min_speed
             while get_temp() > args.max_temp:
+                print(f'Temperature: {get_temp()}')
                 if fan_speed < MAX_VALUE:
                     fan_speed += 5
                     print(f'New speed: {fan_speed}')
