@@ -37,9 +37,10 @@ def main():
             if get_temp() > args.max_temp:
                 if fan_speed < MAX_VALUE:
                     fan_speed += 5
-                    print(f'New speed: {fan_speed}')
             else:
                 fan_speed = int(args.min_speed)
+
+            print(f'Speed: {fan_speed}')
             packet = bytearray()
             packet.append(fan_speed)  # This is where fan value goes
             fan.write(packet)
