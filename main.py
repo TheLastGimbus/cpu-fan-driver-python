@@ -7,11 +7,11 @@ import traceback
 import serial
 
 par = argparse.ArgumentParser()
-par.add_argument('-p', '--port', default='/dev/ttyUSB0')
-par.add_argument('-b', '--baud', default=9600)
-par.add_argument('--timeout', default=5)
-par.add_argument('--min-speed', default=60)
-par.add_argument('--max-temp', default=70)
+par.add_argument('-p', '--port', type=str, default='/dev/ttyUSB0')
+par.add_argument('-b', '--baud', type=int, default=9600)
+par.add_argument('--timeout', type=int, default=5)
+par.add_argument('--min-speed', type=int, default=60)
+par.add_argument('--max-temp', type=int, default=70)
 args = par.parse_args()
 
 MAX_VALUE = 255
@@ -31,7 +31,7 @@ def get_temp():
 
 def main():
     with serial.Serial(args.port, args.baud, timeout=args.timeout) as fan:
-        fan_speed = args.min_speed
+        fan_speed = int(args.min_speed)
         while True:
             print(f'Temperature: {get_temp()}')
             if get_temp() > args.max_temp:
@@ -39,7 +39,7 @@ def main():
                     fan_speed += 5
                     print(f'New speed: {fan_speed}')
             else:
-                fan_speed = args.min_speed
+                fan_speed = int(args.min_speed)
             packet = bytearray()
             packet.append(fan_speed)  # This is where fan value goes
             fan.write(packet)
