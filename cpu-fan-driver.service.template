@@ -1,0 +1,15 @@
+# A template for systemd service
+
+[Unit]
+Description=Custom driver for CPU Fan
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=10
+User=root
+ExecStart=/usr/bin/bash /root/cpu-fan-driver-python/start
+
+[Install]
+WantedBy=multi-user.target

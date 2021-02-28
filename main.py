@@ -30,6 +30,9 @@ def get_temp():
     return temp
 
 
+print(f'Maximum temperature when the fan will kick in: {MAX_TEMP}')
+print(f'Minimum x/255 value of fan speed: {MIN_SPEED}')
+
 with serial.Serial(args.port, args.baud, timeout=args.timeout) as fan:
     fan_speed = 0
     while True:

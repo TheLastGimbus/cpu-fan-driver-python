@@ -1,4 +1,5 @@
 #!/bin/bash
 cd "$(dirname "$0")"
 source venv/bin/activate
-python3 main.py --max-temp 65 --min-speed 80
+# -u stands for unbuffered, so systemd displays logs correctly
+python3 -u main.py --max-temp 65 --min-speed 80
