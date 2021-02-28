@@ -14,7 +14,9 @@ par.add_argument('--min-speed', type=int, default=60)
 par.add_argument('--max-temp', type=int, default=70)
 args = par.parse_args()
 
-MAX_VALUE = 255
+MIN_SPEED = int(args.min_speed)
+MAX_SPEED = 255
+MAX_TEMP = int(args.max_temp)
 
 
 # This is customisable per machine
@@ -31,14 +33,16 @@ def get_temp():
 
 def main():
     with serial.Serial(args.port, args.baud, timeout=args.timeout) as fan:
-        fan_speed = int(args.min_speed)
+        fan_speed = 0
         while True:
             print(f'Temperature: {get_temp()}')
-            if get_temp() > args.max_temp:
-                if fan_speed < MAX_VALUE:
+            if get_temp() > MAX_TEMP:
+                if fan_speed < MIN_SPEED:
+                    fan_speed = MIN_SPEED
+                if fan_speed < MAX_SPEED:
                     fan_speed += 5
             else:
-                fan_speed = int(args.min_speed)
+                fan_speed = 0
 
             print(f'Speed: {fan_speed}')
             packet = bytearray()
