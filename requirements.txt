@@ -1,3 +1,2 @@
 pyserial==3.5
-
-
+pyspectator==1.2.2

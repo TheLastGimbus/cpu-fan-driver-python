@@ -3,6 +3,7 @@ import time
 import traceback
 
 import serial
+from pyspectator.processor import Cpu
 
 par = argparse.ArgumentParser()
 par.add_argument('-p', '--port', default='/dev/ttyUSB0')
@@ -12,14 +13,16 @@ args = par.parse_args()
 
 
 def main():
-    with serial.Serial(args.port, args.baud, timeout=args.timeout) as fan:
+    cpu = Cpu(monitoring_latency=1)
+    with serial.Serial(args.port, args.baud, timeout=args.timeout) as fan, cpu:
         while True:
+            print(f'Temp: {cpu.temperature}')
             packet = bytearray()
             packet.append(10)  # This is where fan value goes
             fan.write(packet)
             res = fan.read()
             if res != b'1':
-                print('Some error!')
+                print(f'Some error: {res}')
             time.sleep(5)
 
 
