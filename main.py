@@ -65,7 +65,7 @@ with serial.Serial(args.port, args.baud, timeout=args.timeout) as fan:
             fan_speed = 0
 
         print(f'Temperature: {_temp} C, speed: {fan_speed}/255')
-        send('cpu_temperature', _temp, "°C", "mdi:cpu")
+        send('cpu_temperature', _temp, "°C", "mdi:cpu-64-bit")
         send('cpu_fan_speed', float(fan_speed) / 255.0 * 100.0, "%", "mdi:fan")
         packet = bytearray()
         packet.append(fan_speed)  # This is where fan value goes
