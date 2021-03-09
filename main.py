@@ -32,7 +32,7 @@ def send(name, value, unit):
     load = {"state": str(value),
             "attributes": {"unit_of_measurement": str(unit), "friendly_name": str(name).replace('_', ' ')}}
     try:
-        r.post('http://localhost:8123/api/states/sensor.' + str(name), data=load, timeout=0.1)  # This is localhost
+        ses.post('http://localhost:8123/api/states/sensor.' + str(name), data=load, timeout=0.1)  # This is localhost
     except Exception as e:
         print("Error when sending request: " + str(e), file=sys.stderr)
 
