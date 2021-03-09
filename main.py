@@ -59,8 +59,9 @@ with serial.Serial(args.port, args.baud, timeout=args.timeout) as fan:
         if _temp > MAX_TEMP:
             if fan_speed < MIN_SPEED:
                 fan_speed = MIN_SPEED
-            if fan_speed < MAX_SPEED:
-                fan_speed += 10
+            fan_speed += 10
+            if fan_speed > MAX_SPEED:
+                fan_speed = MAX_SPEED
         else:
             fan_speed = 0
 
