@@ -21,11 +21,14 @@ MAX_SPEED = 255
 MAX_TEMP = int(args.max_temp)
 
 ses = r.session()
-ses.headers["Authorization"] = "Bearer " + args.token
+if args.token is not None:
+    ses.headers["Authorization"] = "Bearer " + args.token
 ses.headers["Content-Type"] = "application/json"
 
 
 def send(name, value, unit):
+    if args.token is None:
+        return
     load = {"state": str(value),
             "attributes": {"unit_of_measurement": str(unit), "friendly_name": str(name).replace('_', ' ')}}
     try:
