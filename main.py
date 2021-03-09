@@ -29,7 +29,7 @@ ses.headers["Content-Type"] = "application/json"
 def send(name, value, unit, icon):
     if args.token is None:
         return
-    load = {"state": str(value), "attributes": {"unit_of_measurement": str(unit), "icon": icon}}
+    load = {"state": value, "attributes": {"unit_of_measurement": str(unit), "icon": icon}}
     try:
         ses.post('http://localhost:8123/api/states/sensor.' + str(name), data=json.dumps(load),
                  timeout=0.1)  # This is localhost
