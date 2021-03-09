@@ -54,8 +54,8 @@ print(f'Minimum x/255 value of fan speed: {MIN_SPEED}')
 
 with serial.Serial(args.port, args.baud, timeout=args.timeout) as fan:
     fan_speed = 0
-    _temp = get_temp()
     while True:
+        _temp = get_temp()
         if _temp > MAX_TEMP:
             if fan_speed < MIN_SPEED:
                 fan_speed = MIN_SPEED
